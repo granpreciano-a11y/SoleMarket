@@ -149,6 +149,9 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
 .rot-alta{background:rgba(29,158,117,.2);color:#4ade80}
 .rot-media{background:rgba(251,191,36,.2);color:#fbbf24}
 .rot-baja{background:rgba(220,38,38,.2);color:#f87171}
+.dia-btn{padding:6px 11px;font-size:12px;font-weight:600;border:0.5px solid #5c4a38;border-radius:20px;background:#4a3828;cursor:pointer;color:#d4b896;transition:all .12s;white-space:nowrap}
+.dia-btn:hover{background:#5c4a38;color:#fff}
+.dia-btn.active{background:#1a6b3c;color:#fff;border-color:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.2)}
 </style>
 
 <div id="loading-overlay" class="loading-overlay">
@@ -328,6 +331,19 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
         <div class="total-row"><span>Subtotal</span><span id="subtotal-val"></span></div>
         <div class="total-big"><span class="total-label">Total</span><span class="total-val" id="carrito-total">S/ 0.00</span></div>
       </div>
+      <div style="margin-top:10px;background:#2e2419;border-radius:10px;padding:10px 12px;border:0.5px solid #5c4a38">
+        <div style="font-size:11px;color:#a7f3c8;font-weight:600;margin-bottom:7px;text-transform:uppercase;letter-spacing:.04em">📅 Día de la venta:</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap" id="dia-selector">
+          <button class="dia-btn active" onclick="selDia(this,0)">Hoy</button>
+          <button class="dia-btn" onclick="selDia(this,-1)">Ayer</button>
+          <button class="dia-btn" id="dia-btn-2" onclick="selDia(this,-2)"></button>
+          <button class="dia-btn" id="dia-btn-3" onclick="selDia(this,-3)"></button>
+          <button class="dia-btn" id="dia-btn-4" onclick="selDia(this,-4)"></button>
+          <button class="dia-btn" id="dia-btn-5" onclick="selDia(this,-5)"></button>
+          <button class="dia-btn" id="dia-btn-6" onclick="selDia(this,-6)"></button>
+        </div>
+        <div id="dia-selected-label" style="font-size:11px;color:#4ade80;margin-top:6px;font-weight:500">✓ Registrando para hoy</div>
+      </div>
       <div style="display:flex;gap:8px;margin-top:10px">
         <button class="btn btn-block" onclick="limpiarCarrito()" style="flex:1">Limpiar</button>
         <button class="btn btn-primary btn-xl btn-block" style="flex:2" onclick="cobrar()">Cobrar</button>
@@ -435,6 +451,37 @@ let state = {productos: [], ventas: [], nextId: 1};
 let carrito = [];
 let editId = null;
 let ventaCatFiltro = '';
+let ventaFechaOffset = 0;
+
+const _DIAS_ES = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+function initDiaBtns(){
+  const hoy = new Date();
+  for(let i=2;i<=6;i++){
+    const btn=document.getElementById('dia-btn-'+i);
+    if(!btn)continue;
+    const d=new Date(hoy);d.setDate(hoy.getDate()-i);
+    btn.textContent=_DIAS_ES[d.getDay()]+' '+d.getDate();
+  }
+  _actualizarLabelDia();
+}
+
+function selDia(btn,offset){
+  document.querySelectorAll('.dia-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ventaFechaOffset=offset;
+  _actualizarLabelDia();
+}
+window.selDia=selDia;
+
+function _actualizarLabelDia(){
+  const d=new Date();d.setDate(d.getDate()+ventaFechaOffset);
+  const label=document.getElementById('dia-selected-label');
+  if(!label)return;
+  if(ventaFechaOffset===0){label.textContent='✓ Registrando para hoy';return;}
+  const nombre=d.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'});
+  label.textContent='✓ Registrando para: '+nombre;
+}
 let dbReady = false;
 let selectedDiaIdx = null; // índice del día seleccionado en la semana
 
@@ -1103,6 +1150,7 @@ function renderVenta(){
   document.getElementById('venta-cats').innerHTML=['<button class="chip '+(ventaCatFiltro===''?'active':'')+'" onclick="setVentaCat(\'\')">Todos</button>',...cats.map(c=>`<button class="chip ${ventaCatFiltro===c?'active':''}" onclick="setVentaCat('${c}')">${c}</button>`)].join('');
   filtrarVenta();
   renderCarrito();
+  initDiaBtns();
 }
 
 function setVentaCat(c){ventaCatFiltro=c;renderVenta();}
@@ -1125,7 +1173,7 @@ function addCarrito(id){
   const p=state.productos.find(x=>x.id===id);if(!p||p.stock<=0)return;
   const ci=carrito.find(x=>x.id===id);
   if(ci){if(ci.qty>=p.stock){showMsg('venta-msg','Stock máximo alcanzado','warn');return;}ci.qty++;}
-  else carrito.push({id,nombre:p.nombre,precio:p.precio,costo:p.costo,qty:1});
+  else carrito.push({id,nombre:p.nombre,precio:p.precio,precioReal:p.precio,costo:p.costo,qty:1});
   renderCarrito();
 }
 window.addCarrito = addCarrito;
@@ -1137,14 +1185,27 @@ function renderCarrito(){
     document.getElementById('carrito-total').textContent='S/ 0.00';
     return;
   }
-  document.getElementById('carrito-items').innerHTML=carrito.map((ci,i)=>`
-    <div class="cart-item">
-      <span class="ci-name">${ci.nombre}</span>
+  document.getElementById('carrito-items').innerHTML=carrito.map((ci,i)=>{
+    const diff=parseFloat((ci.precioReal-ci.precio).toFixed(2));
+    const diffHtml=diff===0?''
+      :diff>0?`<span style="font-size:10px;color:#4ade80;font-weight:600">+${diff.toFixed(2)}</span>`
+              :`<span style="font-size:10px;color:#f87171;font-weight:600">${diff.toFixed(2)}</span>`;
+    return`<div class="cart-item" style="flex-wrap:wrap;gap:4px">
+      <span class="ci-name" style="flex:1;min-width:80px">${ci.nombre}</span>
       <div class="qty-ctrl"><button class="qty-btn" onclick="cambiarQty(${i},-1)" style="font-size:16px;line-height:1">−</button><span class="qty-num">${ci.qty}</span><button class="qty-btn" onclick="cambiarQty(${i},1)">+</button></div>
-      <span class="ci-price">${fmt(ci.precio*ci.qty)}</span>
+      <div style="display:flex;align-items:center;gap:4px">
+        <span style="font-size:10px;color:#a7f3c8">S/</span>
+        <input type="number" step="0.10" min="0" value="${ci.precioReal.toFixed(2)}"
+          style="width:56px;background:#2e2419;border:0.5px solid ${diff!==0?'#4ade80':'#5c4a38'};border-radius:6px;color:#fff;font-size:13px;font-weight:600;padding:3px 5px;text-align:center"
+          oninput="cambiarPrecio(${i},this.value)"
+          title="Precio base: ${fmt(ci.precio)}">
+        ${diffHtml}
+      </div>
+      <span class="ci-price">${fmt(ci.precioReal*ci.qty)}</span>
       <span class="ci-del" onclick="quitarCarrito(${i})">×</span>
-    </div>`).join('');
-  const total=carrito.reduce((a,c)=>a+c.precio*c.qty,0);
+    </div>`;
+  }).join('');
+  const total=carrito.reduce((a,c)=>a+c.precioReal*c.qty,0);
   document.getElementById('total-section').style.display='block';
   document.getElementById('subtotal-val').textContent=fmt(total);
   document.getElementById('carrito-total').textContent=fmt(total);
@@ -1158,6 +1219,16 @@ function cambiarQty(i,d){
   renderCarrito();
 }
 window.cambiarQty = cambiarQty;
+function cambiarPrecio(i,val){
+  const v=parseFloat(val);
+  if(isNaN(v)||v<0)return;
+  carrito[i].precioReal=Math.round(v*100)/100;
+  // Actualizar total sin re-renderizar completo (para no perder el foco del input)
+  const total=carrito.reduce((a,c)=>a+c.precioReal*c.qty,0);
+  document.getElementById('subtotal-val').textContent=fmt(total);
+  document.getElementById('carrito-total').textContent=fmt(total);
+}
+window.cambiarPrecio=cambiarPrecio;
 function quitarCarrito(i){carrito.splice(i,1);renderCarrito();}
 window.quitarCarrito = quitarCarrito;
 function limpiarCarrito(){carrito=[];renderCarrito();}
@@ -1168,8 +1239,8 @@ async function cobrar(){
   let err=false;
   carrito.forEach(ci=>{const p=state.productos.find(x=>x.id===ci.id);if(!p||p.stock<ci.qty)err=true;});
   if(err){showMsg('venta-msg','Stock insuficiente para algún producto','error');return;}
-  const total=carrito.reduce((a,c)=>a+c.precio*c.qty,0);
-  const ganancia=carrito.reduce((a,c)=>a+(c.precio-c.costo)*c.qty,0);
+  const total=carrito.reduce((a,c)=>a+(c.precioReal??c.precio)*c.qty,0);
+  const ganancia=carrito.reduce((a,c)=>a+((c.precioReal??c.precio)-c.costo)*c.qty,0);
   const items=carrito.map(c=>({...c}));
   // Actualizar stock en Firestore
   for(const ci of carrito){
@@ -1179,10 +1250,14 @@ async function cobrar(){
       await updateDoc(doc(db, 'productos', p._fid), {stock: nuevoStock});
     }
   }
-  // Guardar venta
-  await saveVenta({fecha: new Date().toISOString(), items, total, ganancia});
+  // Guardar venta con la fecha seleccionada
+  const _fechaVenta=new Date();
+  _fechaVenta.setDate(_fechaVenta.getDate()+ventaFechaOffset);
+  if(ventaFechaOffset!==0) _fechaVenta.setHours(12,0,0,0);
+  await saveVenta({fecha:_fechaVenta.toISOString(), items, total, ganancia});
+  const _diaLabel=ventaFechaOffset===0?'hoy':_fechaVenta.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'});
   carrito=[];renderCarrito();filtrarVenta();
-  showMsg('venta-msg','Venta registrada: '+fmt(total),'success');
+  showMsg('venta-msg','✓ Venta registrada para '+_diaLabel+': '+fmt(total),'success');
 }
 window.cobrar = cobrar;
 
