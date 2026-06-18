@@ -1,31 +1,36 @@
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
---brand:#1a6b3c;--brand-light:#e8f5ee;--brand-mid:#2d9b5a;--brand-dark:#0f4525;
---accent:#f59e0b;--accent-light:#fef3c7;--accent-dark:#b45309;
---danger:#dc2626;--danger-light:#fee2e2;
---info:#2563eb;--info-light:#dbeafe;
---surface:#3a2e24;--surface2:#2e2419;
---border:#5c4a38;--text:#ffffff;--muted:#ffffff;
+--brand:#00d68f;--brand-light:#0a2e1f;--brand-mid:#00b377;--brand-dark:#007a52;
+--accent:#f59e0b;--accent-light:#1a1200;--accent-dark:#b45309;
+--danger:#ef4444;--danger-light:#1a0000;
+--info:#3b82f6;--info-light:#0a1628;
+--surface:#111827;--surface2:#0d1117;
+--border:rgba(255,255,255,0.08);--text:#f1f5f9;--muted:#94a3b8;
+--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.1);
+--shadow-float:0 8px 32px rgba(0,0,0,0.45),0 2px 8px rgba(0,0,0,0.3);
+--shadow-card:0 4px 20px rgba(0,0,0,0.4),0 1px 4px rgba(0,0,0,0.2);
 }
-body{font-family:var(--font-sans);background:#4a3828;min-height:100vh}
+body{font-family:var(--font-sans);background:#080b11;min-height:100vh;background-image:radial-gradient(ellipse at 20% 20%,rgba(0,214,143,0.04) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(59,130,246,0.04) 0%,transparent 50%)}
 .app{padding:.5rem 0 2rem}
 
-.header{background:linear-gradient(135deg,#1a6b3c 0%,#2d9b5a 100%);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center}
-.header-title{color:#fff;font-size:18px;font-weight:500}
-.header-sub{color:#a7f3c8;font-size:12px;margin-top:2px}
-.header-time{color:#a7f3c8;font-size:12px;text-align:right}
+.header{position:relative;background:linear-gradient(135deg,rgba(26,20,10,0.85) 0%,rgba(10,8,5,0.9) 100%);border:1px solid rgba(212,175,55,0.25);backdrop-filter:blur(20px);border-radius:var(--border-radius-lg);padding:.55rem 1.25rem;margin-bottom:1rem;box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 0 1px rgba(212,175,55,0.08)}
+.header-title{font-size:clamp(18px,2.8vw,26px);font-weight:900;letter-spacing:0;line-height:1.05;font-family:'Playfair Display',Georgia,serif;background:linear-gradient(180deg,#f3da8e 0%,#d4af37 45%,#9c7a2e 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-align:center}
+.header-meta{position:absolute;left:1.25rem;top:.55rem}
+.header-sub{color:rgba(212,175,55,0.7);font-size:11px;text-align:left}
+.header-time{color:rgba(212,175,55,0.55);font-size:11px;text-align:right;position:absolute;top:.55rem;right:1.25rem}
 
 .sync-indicator{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 8px;border-radius:20px;margin-top:4px}
-.sync-ok{background:rgba(74,222,128,.2);color:#4ade80}
+.sync-ok{background:rgba(74,222,128,.2);color:#00d68f}
 .sync-loading{background:rgba(251,191,36,.2);color:#fbbf24}
 .sync-error{background:rgba(220,38,38,.2);color:#f87171}
 
-.tabs{display:flex;gap:4px;margin-bottom:1rem;background:#2e2419;border-radius:var(--border-radius-lg);padding:4px}
-.tab{flex:1;padding:10px 6px;font-size:13px;font-weight:500;border:none;background:transparent;cursor:pointer;color:var(--muted);border-radius:10px;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs{display:flex;gap:4px;margin-bottom:1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--border-radius-lg);padding:4px;backdrop-filter:blur(10px);box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+.tab{flex:1;padding:10px 6px;font-size:13px;font-weight:500;border:none;background:transparent;cursor:pointer;color:#64748b;border-radius:10px;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:2px}
 .tab .ti{font-size:16px}
-.tab.active{background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;box-shadow:0 2px 8px rgba(217,119,6,.4)}
+.tab.active{background:linear-gradient(135deg,#00b377,#00d68f);color:#000;box-shadow:0 4px 15px rgba(0,214,143,0.35);font-weight:600}
 .section{display:none}.section.active{display:block}
 
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:1rem}
@@ -42,71 +47,76 @@ body{font-family:var(--font-sans);background:#4a3828;min-height:100vh}
 
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
 @media(max-width:520px){.two-col{grid-template-columns:1fr}}
-.card{background:#3a2e24;border:0.5px solid #5c4a38;border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:.75rem}
-.card-title{font-size:13px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.75rem}
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:.75rem;box-shadow:0 8px 32px rgba(0,0,0,0.4),0 2px 8px rgba(0,0,0,0.2);backdrop-filter:blur(12px);transition:box-shadow .2s,border-color .2s}
+.card:hover{box-shadow:0 12px 40px rgba(0,0,0,0.5),0 2px 8px rgba(0,0,0,0.3);border-color:rgba(255,255,255,0.14)}
+.card-title{font-size:13px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}
 
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{padding:8px 10px;font-weight:500;font-size:11px;color:var(--muted);border-bottom:0.5px solid var(--border);text-align:left;text-transform:uppercase;letter-spacing:.04em}
-td{padding:9px 10px;border-bottom:0.5px solid var(--border);color:var(--text)}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+th{padding:10px 12px;font-weight:600;font-size:11px;color:#64748b;border-bottom:1px solid rgba(255,255,255,0.07);text-align:left;text-transform:uppercase;letter-spacing:.06em;background:rgba(0,0,0,0.2)}
+th:first-child{border-radius:8px 0 0 0}
+th:last-child{border-radius:0 8px 0 0}
+td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.05);color:#e2e8f0}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--surface2)}
+tr:hover td{background:rgba(255,255,255,0.04)}
 
 .badge{display:inline-flex;align-items:center;font-size:11px;padding:3px 8px;border-radius:20px;font-weight:500;gap:3px}
-.badge-ok{background:#dcfce7;color:#86efac}
-.badge-low{background:#fef3c7;color:#92400e}
-.badge-out{background:#fee2e2;color:#991b1b}
-.badge-info{background:#dbeafe;color:#1d4ed8}
+.badge-ok{background:rgba(0,214,143,0.12);color:#00d68f}
+.badge-low{background:rgba(245,158,11,0.12);color:#fbbf24}
+.badge-out{background:rgba(239,68,68,0.12);color:#f87171}
+.badge-info{background:rgba(59,130,246,0.12);color:#60a5fa}
 
-.btn{padding:10px 16px;font-size:14px;font-weight:500;border:0.5px solid #5c4a38;border-radius:var(--border-radius-md);background:#4a3828;cursor:pointer;color:#f5e6d0;display:inline-flex;align-items:center;gap:6px;transition:all .12s}
-.btn:hover{background:#5c4a38}
+.btn{padding:10px 16px;font-size:14px;font-weight:500;border:1px solid rgba(255,255,255,0.1);border-radius:var(--border-radius-md);background:rgba(255,255,255,0.06);cursor:pointer;color:#cbd5e1;display:inline-flex;align-items:center;gap:6px;transition:all .15s;backdrop-filter:blur(8px)}
+.btn:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2)}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:#1a6b3c;color:#fff;border-color:#4ade80}
-.btn-primary:hover{background:#2d9b5a;border-color:#2d9b5a}
-.btn-accent{background:#f59e0b;color:#fff;border-color:#f59e0b}
-.btn-accent:hover{background:#d97706}
-.btn-danger{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
-.btn-danger:hover{background:#fecaca}
-.btn-info{background:#dbeafe;color:#1d4ed8;border-color:#93c5fd}
+.btn-primary{background:rgba(0,179,119,0.2);color:#00d68f;border-color:rgba(0,214,143,0.4)}
+.btn-primary:hover{background:rgba(0,179,119,0.35);border-color:#00d68f}
+.btn-accent{background:rgba(245,158,11,0.2);color:#fbbf24;border-color:rgba(245,158,11,0.4)}
+.btn-accent:hover{background:rgba(245,158,11,0.35)}
+.btn-danger{background:rgba(239,68,68,0.1);color:#f87171;border-color:rgba(239,68,68,0.3)}
+.btn-danger:hover{background:rgba(239,68,68,0.2)}
+.btn-info{background:rgba(59,130,246,0.1);color:#60a5fa;border-color:rgba(59,130,246,0.3)}
 .btn-sm{padding:5px 10px;font-size:12px}
 .btn-xl{padding:14px 20px;font-size:15px;border-radius:var(--border-radius-lg)}
 .btn-block{width:100%;justify-content:center}
 
 .form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:8px}
 .form-group{display:flex;flex-direction:column;gap:4px}
-label{font-size:12px;color:var(--muted);font-weight:500}
-input,select,textarea{font-size:14px;padding:10px 12px;border:0.5px solid #5c4a38;border-radius:var(--border-radius-md);background:#2e2419;color:#f5e6d0;width:100%;transition:border-color .1s}
-input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px rgba(26,107,60,.12)}
+label{font-size:12px;color:#64748b;font-weight:600;letter-spacing:.02em}
+input,select,textarea{font-size:14px;padding:10px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:var(--border-radius-md);background:rgba(0,0,0,0.3);color:#f1f5f9;width:100%;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus{outline:none;border-color:rgba(0,214,143,0.5);box-shadow:0 0 0 3px rgba(0,214,143,0.1)}
+select option{background:#0d1117;color:#e2e8f0}
+select option:checked{background:#003d2b;color:#00d68f}
 .err-msg{font-size:11px;color:#dc2626;margin-top:2px}
 
 .venta-prod{display:flex;justify-content:space-between;align-items:center;padding:10px 8px;border-radius:var(--border-radius-md);cursor:pointer;border-bottom:0.5px solid var(--border);transition:background .1s}
 .venta-prod:last-child{border-bottom:none}
 .venta-prod:hover{background:var(--surface2)}
-.venta-prod:active{background:#e8f5ee}
-.vp-name{font-size:14px;font-weight:500;color:#a7f3c8}
-.vp-cat{font-size:11px;color:#ffffff}
-.vp-price{font-size:15px;font-weight:500;color:#4ade80}
-.add-btn{width:36px;height:36px;border-radius:50%;background:#1a6b3c;color:#fff;border:none;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .1s}
+.venta-prod:active{background:rgba(0,214,143,0.08)}
+.vp-name{font-size:14px;font-weight:500;color:#64d8a0}
+.vp-cat{font-size:11px;color:#64748b}
+.vp-price{font-size:15px;font-weight:500;color:#00d68f}
+.add-btn{width:36px;height:36px;border-radius:50%;background:rgba(0,214,143,0.15);color:#fff;border:none;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .1s}
 .add-btn:active{transform:scale(.9)}
 
 .cart-item{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:0.5px solid var(--border)}
 .cart-item:last-child{border-bottom:none}
-.ci-name{flex:1;font-size:13px;font-weight:500;color:#a7f3c8}
+.ci-name{flex:1;font-size:13px;font-weight:500;color:#64d8a0}
 .qty-ctrl{display:flex;align-items:center;gap:6px;background:var(--surface2);border-radius:20px;padding:3px 8px}
-.qty-btn{width:26px;height:26px;border-radius:50%;background:#1a6b3c;color:#fff;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.qty-num{font-size:14px;font-weight:500;min-width:20px;text-align:center;color:#a7f3c8}
-.ci-price{font-size:13px;font-weight:500;min-width:68px;text-align:right;color:#4ade80}
+.qty-btn{width:26px;height:26px;border-radius:50%;background:rgba(0,214,143,0.15);color:#fff;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qty-num{font-size:14px;font-weight:500;min-width:20px;text-align:center;color:#64d8a0}
+.ci-price{font-size:13px;font-weight:500;min-width:68px;text-align:right;color:#00d68f}
 .ci-del{cursor:pointer;font-size:18px;color:var(--muted);padding:2px;line-height:1}
 
-.total-section{background:#e8f5ee;border-radius:var(--border-radius-lg);padding:14px;margin:10px 0}
-.total-row{display:flex;justify-content:space-between;font-size:13px;color:#4ade80;margin-bottom:4px}
+.total-section{background:rgba(0,214,143,0.06);border:1px solid rgba(0,214,143,0.15);border-radius:var(--border-radius-lg);padding:14px;margin:10px 0}
+.total-row{display:flex;justify-content:space-between;font-size:13px;color:#00d68f;margin-bottom:4px}
 .total-big{display:flex;justify-content:space-between;align-items:center}
-.total-label{font-size:15px;font-weight:500;color:#86efac}
-.total-val{font-size:26px;font-weight:500;color:#4ade80}
+.total-label{font-size:15px;font-weight:500;color:#64d8a0}
+.total-val{font-size:26px;font-weight:500;color:#00d68f}
 
 .msg{padding:10px 14px;border-radius:var(--border-radius-md);font-size:13px;margin-bottom:.75rem;font-weight:500}
-.msg-success{background:#dcfce7;color:#86efac;border:0.5px solid #86efac}
-.msg-error{background:#fee2e2;color:#991b1b;border:0.5px solid #fca5a5}
-.msg-warn{background:#fef3c7;color:#92400e;border:0.5px solid #fcd34d}
+.msg-success{background:rgba(0,214,143,0.1);color:#00d68f;border:1px solid rgba(0,214,143,0.3)}
+.msg-error{background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.3)}
+.msg-warn{background:rgba(245,158,11,0.1);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
 
 .report-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:0.5px solid var(--border);font-size:13px}
 .report-row:last-child{border-bottom:none}
@@ -117,41 +127,43 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
 .search-bar{display:flex;gap:6px;margin-bottom:.75rem}
 .search-bar input{flex:1}
 .toolbar{display:flex;gap:6px;margin-bottom:.75rem;flex-wrap:wrap}
-.chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;border:0.5px solid #5c4a38;background:#4a3828;cursor:pointer;color:#d4b896}
-.chip.active{background:#1a6b3c;color:#fff;border-color:#4ade80}
+.chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);cursor:pointer;color:#64748b}
+.chip.active{background:rgba(0,214,143,0.15);color:#00d68f;border-color:rgba(0,214,143,0.35)}
 
-.alert-banner{background:#fef3c7;border:0.5px solid #fcd34d;border-radius:var(--border-radius-md);padding:10px 14px;margin-bottom:.75rem;font-size:13px;color:#92400e;display:flex;justify-content:space-between;align-items:center}
+.alert-banner{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:var(--border-radius-md);padding:10px 14px;margin-bottom:.75rem;font-size:13px;color:#fbbf24;display:flex;justify-content:space-between;align-items:center}
 
-.loading-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:12px}
-.loading-spinner{width:40px;height:40px;border:3px solid #5c4a38;border-top-color:#4ade80;border-radius:50%;animation:spin .8s linear infinite}
+.loading-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:12px;backdrop-filter:blur(8px)}
+.loading-spinner{width:40px;height:40px;border:3px solid rgba(255,255,255,0.1);border-top-color:#00d68f;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.dash-kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:.75rem}
-.dash-kpi{background:#3a2e24;border:0.5px solid #5c4a38;border-radius:var(--border-radius-lg);padding:14px;position:relative;overflow:hidden;cursor:pointer;transition:border-color .15s}
-.dash-kpi:hover{border-color:#4ade80}
+.loading-text{color:#00d68f;font-size:14px}
+
+.hm-cell{border-radius:3px;height:22px;transition:opacity .15s;cursor:default;position:relative}
+.hm-cell:hover::after{content:attr(data-tip);position:absolute;bottom:26px;left:50%;transform:translateX(-50%);background:#1e293b;border:1px solid rgba(255,255,255,0.15);color:#94a3b8;font-size:10px;padding:3px 7px;border-radius:6px;white-space:nowrap;z-index:10;pointer-events:none}
+
+.dia-btn{padding:6px 11px;font-size:12px;font-weight:600;border:1px solid rgba(255,255,255,0.1);border-radius:20px;background:rgba(255,255,255,0.05);cursor:pointer;color:#64748b;transition:all .12s;white-space:nowrap}
+.dia-btn:hover{background:rgba(255,255,255,0.1);color:#e2e8f0}
+.dia-btn.active{background:rgba(0,214,143,0.15);color:#00d68f;border-color:rgba(0,214,143,0.4);box-shadow:0 0 0 2px rgba(0,214,143,0.15)}
+.dash-kpi-grid{display:flex;gap:.6rem;flex-wrap:nowrap}
+.dash-kpi{flex:1;min-width:0;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:var(--border-radius-lg);padding:14px;position:relative;overflow:hidden;cursor:pointer;transition:all .2s;box-shadow:0 8px 24px rgba(0,0,0,0.35),0 2px 6px rgba(0,0,0,0.2)}
+.dash-kpi:hover{border-color:rgba(0,214,143,0.3);box-shadow:0 12px 36px rgba(0,0,0,0.5),0 0 0 1px rgba(0,214,143,0.15);transform:translateY(-2px)}
 .dash-kpi-accent{position:absolute;top:0;left:0;width:3px;height:100%}
-.dash-kpi-label{font-size:11px;color:#a7f3c8;font-weight:500;letter-spacing:.04em;margin-bottom:5px}
-.dash-kpi-value{font-size:21px;font-weight:500;color:#fff;line-height:1.1}
-.dash-kpi-sub{font-size:11px;color:#ffffff80;margin-top:3px}
-.dash-kpi-up{color:#4ade80}.dash-kpi-warn{color:#fbbf24}.dash-kpi-danger{color:#f87171}
-.dash-card{background:#3a2e24;border:0.5px solid #5c4a38;border-radius:var(--border-radius-lg);padding:1rem 1.25rem}
+.dash-kpi-label{font-size:11px;color:#64748b;font-weight:600;letter-spacing:.06em;margin-bottom:5px}
+.dash-kpi-value{font-size:21px;font-weight:600;color:#f1f5f9;line-height:1.1}
+.dash-kpi-sub{font-size:11px;color:rgba(255,255,255,0.3);margin-top:3px}
+.dash-kpi-up{color:#00d68f}.dash-kpi-warn{color:#fbbf24}.dash-kpi-danger{color:#f87171}
+.dash-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;box-shadow:0 8px 32px rgba(0,0,0,0.4),0 2px 8px rgba(0,0,0,0.2);backdrop-filter:blur(12px)}
 .dash-chart-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem;flex-wrap:wrap;gap:8px}
 .dash-chart-title{font-size:13px;font-weight:500;color:#fff}
-.dash-chart-sub{font-size:11px;color:#a7f3c8;margin-top:2px}
-.dash-legend{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:#a7f3c8}
+.dash-chart-sub{font-size:11px;color:#64d8a0;margin-top:2px}
+.dash-legend{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:#64d8a0}
 .dash-legend span{display:flex;align-items:center;gap:5px}
 .dash-legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;display:inline-block}
-.loading-text{color:#a7f3c8;font-size:14px}
-.hm-cell{border-radius:3px;height:22px;transition:opacity .15s;cursor:default;position:relative}
-.hm-cell:hover::after{content:attr(data-tip);position:absolute;bottom:26px;left:50%;transform:translateX(-50%);background:#2e2419;border:0.5px solid #5c4a38;color:#a7f3c8;font-size:10px;padding:3px 7px;border-radius:6px;white-space:nowrap;z-index:10;pointer-events:none}
 #tabla-inteligente th{cursor:pointer;user-select:none}
-#tabla-inteligente th:hover{color:#4ade80}
+#tabla-inteligente th:hover{color:#00d68f}
 .rot-badge{display:inline-flex;align-items:center;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
-.rot-alta{background:rgba(29,158,117,.2);color:#4ade80}
-.rot-media{background:rgba(251,191,36,.2);color:#fbbf24}
-.rot-baja{background:rgba(220,38,38,.2);color:#f87171}
-.dia-btn{padding:6px 11px;font-size:12px;font-weight:600;border:0.5px solid #5c4a38;border-radius:20px;background:#4a3828;cursor:pointer;color:#d4b896;transition:all .12s;white-space:nowrap}
-.dia-btn:hover{background:#5c4a38;color:#fff}
-.dia-btn.active{background:#1a6b3c;color:#fff;border-color:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.2)}
+.rot-alta{background:rgba(0,214,143,.15);color:#00d68f}
+.rot-media{background:rgba(251,191,36,.15);color:#fbbf24}
+.rot-baja{background:rgba(239,68,68,.15);color:#f87171}
 </style>
 
 <div id="loading-overlay" class="loading-overlay">
@@ -162,9 +174,11 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
 <div class="app">
 <div class="header">
   <div>
-    <div class="header-title">SISTEMA DE CONTROL "SOLE MARKET"</div>
-    <div class="header-sub">Sistema de gestión</div>
-    <div id="sync-status" class="sync-indicator sync-loading">⏳ Sincronizando...</div>
+    <div class="header-title">SISTEMA DE CONTROL SOLE MARKET</div>
+    <div class="header-meta">
+      <div class="header-sub">Sistema de gestión</div>
+      <div id="sync-status" class="sync-indicator sync-loading">⏳ Sincronizando...</div>
+    </div>
   </div>
   <div class="header-time" id="hdr-time"></div>
 </div>
@@ -193,10 +207,10 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <!-- Botones de tipo -->
-        <div id="chart-btns-group" style="display:flex;gap:3px;background:#2e2419;border-radius:8px;padding:3px">
+        <div id="chart-btns-group" style="display:flex;gap:3px;background:rgba(255,255,255,0.06);border-radius:8px;padding:3px">
           <button id="btn-semanal" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:#378ADD;color:#fff;transition:all .15s">Semana ▾</button>
-          <button id="btn-mensual" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:transparent;color:#a7f3c8;transition:all .15s">Mes ▾</button>
-          <button id="btn-trimestral" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:transparent;color:#a7f3c8;transition:all .15s">Año ▾</button>
+          <button id="btn-mensual" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:transparent;color:#64d8a0;transition:all .15s">Mes ▾</button>
+          <button id="btn-trimestral" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:transparent;color:#64d8a0;transition:all .15s">Año ▾</button>
         </div>
         <!-- Leyenda -->
         <div class="dash-legend">
@@ -209,7 +223,7 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
     <div id="chart-chips-wrap" style="display:none;padding:8px 0 4px 0">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <div id="chart-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
-        <button onclick="document.getElementById('chart-chips-wrap').style.display='none';window._menuOpen=false;" style="margin-left:4px;padding:3px 10px;font-size:10px;font-weight:600;border:0.5px solid #5c4a38;border-radius:20px;cursor:pointer;background:#2e2419;color:#e87a7a;white-space:nowrap">✕ Ocultar</button>
+        <button onclick="document.getElementById('chart-chips-wrap').style.display='none';window._menuOpen=false;" style="margin-left:4px;padding:3px 10px;font-size:10px;font-weight:600;border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;cursor:pointer;background:rgba(0,0,0,0.4);color:#e87a7a;white-space:nowrap">✕ Ocultar</button>
       </div>
     </div>
     <div style="position:relative;height:210px">
@@ -220,10 +234,21 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
   <!-- BARRAS + DONUT -->
   <div class="two-col" style="margin-bottom:.75rem">
     <div class="dash-card">
-      <div class="dash-chart-header">
+      <div class="dash-chart-header" style="flex-wrap:wrap;gap:8px;align-items:flex-start">
         <div>
-          <div class="dash-chart-title">Top productos vendidos</div>
-          <div class="dash-chart-sub">Unidades este mes</div>
+          <div class="dash-chart-title" id="chart-barras-title">Top productos vendidos</div>
+          <div class="dash-chart-sub" id="chart-barras-sub">Unidades este mes</div>
+        </div>
+        <div id="prod-btns-group" style="display:flex;gap:3px;background:rgba(255,255,255,0.06);border-radius:8px;padding:3px">
+          <button id="prod-btn-semanal" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:#378ADD;color:#fff;transition:all .15s">Semana ▾</button>
+          <button id="prod-btn-mensual" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:transparent;color:#64d8a0;transition:all .15s">Mes ▾</button>
+          <button id="prod-btn-trimestral" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:transparent;color:#64d8a0;transition:all .15s">Año ▾</button>
+        </div>
+      </div>
+      <div id="prod-chips-wrap" style="display:none;padding:8px 0 4px 0">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div id="prod-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+          <button onclick="document.getElementById('prod-chips-wrap').style.display='none';" style="margin-left:4px;padding:3px 10px;font-size:10px;font-weight:600;border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;cursor:pointer;background:rgba(0,0,0,0.4);color:#e87a7a;white-space:nowrap">✕ Ocultar</button>
         </div>
       </div>
       <div id="chart-barras-wrap" style="position:relative;height:220px">
@@ -231,10 +256,21 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
       </div>
     </div>
     <div class="dash-card">
-      <div class="dash-chart-header">
+      <div class="dash-chart-header" style="flex-wrap:wrap;gap:8px;align-items:flex-start">
         <div>
-          <div class="dash-chart-title">Ventas por categoría</div>
-          <div class="dash-chart-sub">% del total</div>
+          <div class="dash-chart-title" id="chart-donut-title">Ventas por categoría</div>
+          <div class="dash-chart-sub" id="chart-donut-sub">% del total</div>
+        </div>
+        <div id="cat-btns-group" style="display:flex;gap:3px;background:rgba(255,255,255,0.06);border-radius:8px;padding:3px">
+          <button id="cat-btn-semanal" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:#378ADD;color:#fff;transition:all .15s">Semana ▾</button>
+          <button id="cat-btn-mensual" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:transparent;color:#64d8a0;transition:all .15s">Mes ▾</button>
+          <button id="cat-btn-trimestral" style="padding:4px 11px;font-size:11px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:transparent;color:#64d8a0;transition:all .15s">Año ▾</button>
+        </div>
+      </div>
+      <div id="cat-chips-wrap" style="display:none;padding:8px 0 4px 0">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div id="cat-chips" style="display:flex;gap:5px;flex-wrap:wrap"></div>
+          <button onclick="document.getElementById('cat-chips-wrap').style.display='none';" style="margin-left:4px;padding:3px 10px;font-size:10px;font-weight:600;border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;cursor:pointer;background:rgba(0,0,0,0.4);color:#e87a7a;white-space:nowrap">✕ Ocultar</button>
         </div>
       </div>
       <div id="dash-donut-legend" class="dash-legend" style="flex-wrap:wrap;margin-bottom:8px"></div>
@@ -259,7 +295,7 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
       </div>
       <div id="heatmap-container" style="overflow-x:auto;padding-bottom:4px">
         <div id="heatmap-grid" style="display:grid;gap:4px;min-width:280px"></div>
-        <div id="heatmap-labels" style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:#a7f3c8;min-width:280px;padding:0 2px"></div>
+        <div id="heatmap-labels" style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:#64d8a0;min-width:280px;padding:0 2px"></div>
       </div>
     </div>
     <div class="dash-card" style="display:flex;flex-direction:column">
@@ -270,19 +306,19 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
           <div class="dash-chart-sub">Progreso hacia el objetivo</div>
         </div>
         <!-- Botones de período -->
-        <div style="display:flex;gap:4px;background:#2e2419;border-radius:10px;padding:3px;flex-shrink:0">
+        <div style="display:flex;gap:4px;background:rgba(255,255,255,0.06);border-radius:10px;padding:3px;flex-shrink:0">
           <button id="gauge-btn-semanal" onclick="setGaugePeriod('semanal')" style="padding:5px 12px;font-size:11px;font-weight:600;border:none;border-radius:7px;cursor:pointer;background:#1D9E75;color:#fff;transition:all .15s">Semanal</button>
-          <button id="gauge-btn-mensual" onclick="setGaugePeriod('mensual')" style="padding:5px 12px;font-size:11px;font-weight:600;border:none;border-radius:7px;cursor:pointer;background:transparent;color:#a7f3c8;transition:all .15s">Mensual</button>
-          <button id="gauge-btn-anual" onclick="setGaugePeriod('anual')" style="padding:5px 12px;font-size:11px;font-weight:600;border:none;border-radius:7px;cursor:pointer;background:transparent;color:#a7f3c8;transition:all .15s">Anual</button>
+          <button id="gauge-btn-mensual" onclick="setGaugePeriod('mensual')" style="padding:5px 12px;font-size:11px;font-weight:600;border:none;border-radius:7px;cursor:pointer;background:transparent;color:#64d8a0;transition:all .15s">Mensual</button>
+          <button id="gauge-btn-anual" onclick="setGaugePeriod('anual')" style="padding:5px 12px;font-size:11px;font-weight:600;border:none;border-radius:7px;cursor:pointer;background:transparent;color:#64d8a0;transition:all .15s">Anual</button>
         </div>
       </div>
       <!-- Panel desplegable para ingresar meta -->
-      <div id="gauge-input-panel" style="display:none;width:100%;background:#2e2419;border:0.5px solid #5c4a38;border-radius:10px;padding:10px 12px;margin-bottom:8px">
-        <div style="font-size:11px;color:#a7f3c8;margin-bottom:6px;font-weight:500">Ingresa la meta <span id="gauge-period-label">mensual</span>:</div>
+      <div id="gauge-input-panel" style="display:none;width:100%;background:rgba(0,0,0,0.4);border:0.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 12px;margin-bottom:8px">
+        <div style="font-size:11px;color:#64d8a0;margin-bottom:6px;font-weight:500">Ingresa la meta <span id="gauge-period-label">mensual</span>:</div>
         <div style="display:flex;gap:6px;align-items:center">
-          <span style="font-size:13px;color:#4ade80;font-weight:600">S/</span>
+          <span style="font-size:13px;color:#00d68f;font-weight:600">S/</span>
           <input id="gauge-meta-input" type="number" min="1" step="100" placeholder="30000"
-            style="flex:1;font-size:14px;padding:7px 10px;border:0.5px solid #5c4a38;border-radius:8px;background:#3a2e24;color:#f5e6d0;width:100%"
+            style="flex:1;font-size:14px;padding:7px 10px;border:0.5px solid rgba(255,255,255,0.12);border-radius:8px;background:rgba(255,255,255,0.05);color:#e2e8f0;width:100%"
             onkeydown="if(event.key==='Enter')applyGaugeMeta()">
           <button onclick="applyGaugeMeta()" style="padding:7px 12px;font-size:12px;font-weight:600;border:none;border-radius:8px;background:#1D9E75;color:#fff;cursor:pointer;white-space:nowrap">✓ OK</button>
         </div>
@@ -293,7 +329,7 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
         <div id="gauge-amount" style="text-align:center;font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-0.5px"></div>
         <canvas id="chart-gauge" width="220" height="130" role="img" aria-label="Gauge de meta mensual de ventas">Velocímetro de avance hacia la meta del mes.</canvas>
         <div id="gauge-label" style="text-align:center;margin-top:6px;font-size:13px;color:#fff;font-weight:500"></div>
-        <div id="gauge-sub" style="text-align:center;font-size:11px;color:#a7f3c8;margin-top:2px"></div>
+        <div id="gauge-sub" style="text-align:center;font-size:11px;color:#64d8a0;margin-top:2px"></div>
       </div>
     </div>
   </div>
@@ -303,9 +339,9 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
       <div class="card-title" style="margin-bottom:0" id="dash-semana-titulo">📅 Esta semana</div>
       <div style="display:flex;align-items:center;gap:6px">
-        <button onclick="navSemana(-1)" style="width:32px;height:32px;border-radius:50%;background:#2e2419;border:0.5px solid #5c4a38;color:#a7f3c8;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">←</button>
-        <button id="btn-semana-hoy" onclick="irSemanaHoy()" style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:#1a6b3c;color:#a7f3c8;border:0.5px solid #4ade80;cursor:pointer;display:none">Hoy</button>
-        <button onclick="navSemana(1)" id="btn-nav-sig" style="width:32px;height:32px;border-radius:50%;background:#2e2419;border:0.5px solid #5c4a38;color:#a7f3c8;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">→</button>
+        <button onclick="navSemana(-1)" style="width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.4);border:0.5px solid rgba(255,255,255,0.12);color:#64d8a0;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">←</button>
+        <button id="btn-semana-hoy" onclick="irSemanaHoy()" style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;background:rgba(0,214,143,0.15);color:#64d8a0;border:0.5px solid #4ade80;cursor:pointer;display:none">Hoy</button>
+        <button onclick="navSemana(1)" id="btn-nav-sig" style="width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.4);border:0.5px solid rgba(255,255,255,0.12);color:#64d8a0;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">→</button>
       </div>
     </div>
     <div id="dash-semana-stats" class="stats-grid" style="margin-bottom:.75rem"></div>
@@ -338,8 +374,8 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
         <div class="total-row"><span>Subtotal</span><span id="subtotal-val"></span></div>
         <div class="total-big"><span class="total-label">Total</span><span class="total-val" id="carrito-total">S/ 0.00</span></div>
       </div>
-      <div style="margin-top:10px;background:#2e2419;border-radius:10px;padding:10px 12px;border:0.5px solid #5c4a38">
-        <div style="font-size:11px;color:#a7f3c8;font-weight:600;margin-bottom:7px;text-transform:uppercase;letter-spacing:.04em">📅 Día de la venta:</div>
+      <div style="margin-top:10px;background:rgba(0,0,0,0.4);border-radius:10px;padding:10px 12px;border:0.5px solid rgba(255,255,255,0.12)">
+        <div style="font-size:11px;color:#64d8a0;font-weight:600;margin-bottom:7px;text-transform:uppercase;letter-spacing:.04em">📅 Día de la venta:</div>
         <div style="display:flex;gap:5px;flex-wrap:wrap" id="dia-selector">
           <button class="dia-btn active" onclick="selDia(this,0)">Hoy</button>
           <button class="dia-btn" onclick="selDia(this,-1)">Ayer</button>
@@ -349,7 +385,7 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
           <button class="dia-btn" id="dia-btn-5" onclick="selDia(this,-5)"></button>
           <button class="dia-btn" id="dia-btn-6" onclick="selDia(this,-6)"></button>
         </div>
-        <div id="dia-selected-label" style="font-size:11px;color:#4ade80;margin-top:6px;font-weight:500">✓ Registrando para hoy</div>
+        <div id="dia-selected-label" style="font-size:11px;color:#00d68f;margin-top:6px;font-weight:500">✓ Registrando para hoy</div>
       </div>
       <div style="display:flex;gap:8px;margin-top:10px">
         <button class="btn btn-block" onclick="limpiarCarrito()" style="flex:1">Limpiar</button>
@@ -373,9 +409,16 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
       <div class="form-group"><label>Stock inicial</label><input id="f-stock" type="number" min="0" placeholder="0"></div>
       <div class="form-group"><label>Stock mínimo alerta</label><input id="f-minstock" type="number" min="0" placeholder="5"></div>
     </div>
-    <div style="display:flex;gap:8px;margin-top:4px">
+    <div style="display:flex;gap:8px;margin-top:4px;align-items:center">
       <button class="btn btn-primary" onclick="guardarProducto()">Guardar</button>
       <button class="btn" onclick="cancelarEdit()">Cancelar</button>
+      <div id="stock-counter" style="display:flex;align-items:center;gap:6px;background:rgba(0,214,143,0.08);border:1px solid rgba(0,214,143,0.25);border-radius:10px;padding:7px 14px;margin-left:4px">
+        <span style="font-size:18px">📦</span>
+        <div style="display:flex;flex-direction:column;line-height:1.2">
+          <span style="font-size:10px;color:#64748b;font-weight:600;letter-spacing:.04em;text-transform:uppercase">Productos en stock</span>
+          <span id="stock-counter-val" style="font-size:18px;font-weight:700;color:#00d68f">0</span>
+        </div>
+      </div>
     </div>
     <input type="hidden" id="f-id">
   </div>
@@ -438,16 +481,16 @@ input:focus,select:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 2px 
 
 <!-- MODAL: CAMBIAR FECHA DE VENTA -->
 <div id="modal-fecha" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:flex-end;justify-content:center;padding:0">
-  <div style="background:#3a2e24;border:1px solid #5c4a38;border-radius:16px 16px 0 0;padding:1.25rem;width:100%;max-width:480px;box-shadow:0 -4px 32px rgba(0,0,0,.5)">
+  <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:16px 16px 0 0;padding:1.25rem;width:100%;max-width:480px;box-shadow:0 -4px 32px rgba(0,0,0,.5)">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
-      <div style="font-size:15px;font-weight:600;color:#a7f3c8">📅 Cambiar fecha de venta</div>
-      <button onclick="cerrarModalFecha()" style="background:none;border:none;color:#a7f3c8;font-size:26px;cursor:pointer;line-height:1;padding:0 4px">×</button>
+      <div style="font-size:15px;font-weight:600;color:#64d8a0">📅 Cambiar fecha de venta</div>
+      <button onclick="cerrarModalFecha()" style="background:none;border:none;color:#64d8a0;font-size:26px;cursor:pointer;line-height:1;padding:0 4px">×</button>
     </div>
-    <div style="background:#2e2419;border-radius:10px;padding:8px 12px;margin-bottom:.75rem;font-size:12px;color:#a7f3c8;max-height:60px;overflow:hidden;text-overflow:ellipsis" id="modal-fecha-info"></div>
+    <div style="background:rgba(0,0,0,0.4);border-radius:10px;padding:8px 12px;margin-bottom:.75rem;font-size:12px;color:#64d8a0;max-height:60px;overflow:hidden;text-overflow:ellipsis" id="modal-fecha-info"></div>
     <div style="margin-bottom:.75rem">
-      <label style="font-size:12px;color:#a7f3c8;font-weight:600;display:block;margin-bottom:6px">Nueva fecha:</label>
+      <label style="font-size:12px;color:#64d8a0;font-weight:600;display:block;margin-bottom:6px">Nueva fecha:</label>
       <input type="date" id="modal-fecha-input"
-        style="width:100%;font-size:16px;padding:12px;border:1.5px solid #4ade80;border-radius:10px;background:#2e2419;color:#f5e6d0">
+        style="width:100%;font-size:16px;padding:12px;border:1.5px solid #4ade80;border-radius:10px;background:rgba(0,0,0,0.4);color:#e2e8f0">
     </div>
     <div style="display:flex;gap:8px;margin-bottom:.5rem">
       <button onclick="cerrarModalFecha()" class="btn" style="flex:1">Cancelar</button>
@@ -658,9 +701,9 @@ function renderDash(){
     <div style="border-bottom:0.5px solid var(--border);padding:8px 0;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
         <span style="font-size:11px;color:var(--muted)">${new Date(v.fecha).toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})}</span>
-        <span style="font-weight:500;color:#4ade80;font-size:14px">${fmt(v.total)}</span>
+        <span style="font-weight:500;color:#00d68f;font-size:14px">${fmt(v.total)}</span>
       </div>
-      <div style="font-size:11px;color:#a7f3c8">${v.items.map(i=>`${i.nombre} ×${i.qty}`).join(', ')}</div>
+      <div style="font-size:11px;color:#64d8a0">${v.items.map(i=>`${i.nombre} ×${i.qty}`).join(', ')}</div>
     </div>`).join(''):'<div class="empty">Sin ventas hoy</div>';
   renderSemanasDash();
   renderDashCharts();
@@ -700,7 +743,7 @@ function _initChartButtons(){
         var b=document.getElementById('btn-'+id);
         if(!b) return;
         b.style.background=id===p?'#378ADD':'transparent';
-        b.style.color=id===p?'#fff':'#a7f3c8';
+        b.style.color=id===p?'#fff':'#64d8a0';
       });
       buildChips();
       if(wrap){ wrap.style.display='block'; _menuOpen=true; }
@@ -731,7 +774,7 @@ function buildChips(){
       const isActive=(_filterAnio===item.key);
       const btn=document.createElement('button');
       btn.textContent=item.label;
-      btn.style.cssText='padding:4px 10px;font-size:11px;font-weight:600;border:0.5px solid '+(isActive?'#378ADD':'#5c4a38')+';border-radius:20px;cursor:pointer;background:'+(isActive?'rgba(55,138,221,0.3)':'#2e2419')+';color:'+(isActive?'#7ec8f7':'#a7f3c8')+';transition:all .15s;white-space:nowrap';
+      btn.style.cssText='padding:4px 10px;font-size:11px;font-weight:600;border:0.5px solid '+(isActive?'#378ADD':'rgba(255,255,255,0.12)')+';border-radius:20px;cursor:pointer;background:'+(isActive?'rgba(55,138,221,0.3)':'rgba(0,0,0,0.4)')+';color:'+(isActive?'#7ec8f7':'#64d8a0')+';transition:all .15s;white-space:nowrap';
       btn.onclick=(e)=>{
         e.stopPropagation();
         _filterAnio=item.key;
@@ -747,7 +790,7 @@ function buildChips(){
       const isActive=(_filterMes===item.key);
       const btn=document.createElement('button');
       btn.textContent=item.label;
-      btn.style.cssText='padding:4px 10px;font-size:11px;font-weight:600;border:0.5px solid '+(isActive?'#378ADD':'#5c4a38')+';border-radius:20px;cursor:pointer;background:'+(isActive?'rgba(55,138,221,0.3)':'#2e2419')+';color:'+(isActive?'#7ec8f7':'#a7f3c8')+';transition:all .15s;white-space:nowrap';
+      btn.style.cssText='padding:4px 10px;font-size:11px;font-weight:600;border:0.5px solid '+(isActive?'#378ADD':'rgba(255,255,255,0.12)')+';border-radius:20px;cursor:pointer;background:'+(isActive?'rgba(55,138,221,0.3)':'rgba(0,0,0,0.4)')+';color:'+(isActive?'#7ec8f7':'#64d8a0')+';transition:all .15s;white-space:nowrap';
       btn.onclick=(e)=>{
         e.stopPropagation();
         _filterMes=item.key;
@@ -789,7 +832,7 @@ function buildChips(){
       const isActive=(_filterSem===item.key);
       const btn=document.createElement('button');
       btn.textContent=item.label;
-      btn.style.cssText='padding:4px 10px;font-size:11px;font-weight:600;border:0.5px solid '+(isActive?'#378ADD':'#5c4a38')+';border-radius:20px;cursor:pointer;background:'+(isActive?'rgba(55,138,221,0.3)':'#2e2419')+';color:'+(isActive?'#7ec8f7':'#a7f3c8')+';transition:all .15s;white-space:nowrap';
+      btn.style.cssText='padding:4px 10px;font-size:11px;font-weight:600;border:0.5px solid '+(isActive?'#378ADD':'rgba(255,255,255,0.12)')+';border-radius:20px;cursor:pointer;background:'+(isActive?'rgba(55,138,221,0.3)':'rgba(0,0,0,0.4)')+';color:'+(isActive?'#7ec8f7':'#64d8a0')+';transition:all .15s;white-space:nowrap';
       btn.onclick=(e)=>{
         e.stopPropagation();
         _filterSem=item.key;
@@ -885,8 +928,8 @@ function renderChartLineal(){
       options:{responsive:true,maintainAspectRatio:false,
         interaction:{mode:'index',intersect:false},
         plugins:{legend:{display:false},tooltip:{
-          backgroundColor:'#1e1610',borderColor:'#5c4a38',borderWidth:1,
-          titleColor:'#a7f3c8',bodyColor:'#fff',padding:10,
+          backgroundColor:'#1e1610',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,
+          titleColor:'#64d8a0',bodyColor:'#fff',padding:10,
           callbacks:{
             label:c=>{const icon=c.datasetIndex===0?'💰':'📈';return ' '+icon+' '+c.dataset.label+': S/ '+c.raw.toFixed(2);},
             afterBody:items=>{
@@ -897,26 +940,144 @@ function renderChartLineal(){
           }
         }},
         scales:{
-          x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#a7f3c8',font:{size:10},maxTicksLimit:_chartPeriod==='mensual'?16:12,autoSkip:true}},
-          y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#a7f3c8',font:{size:10},callback:v=>'S/'+v}}
+          x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#64d8a0',font:{size:10},maxTicksLimit:_chartPeriod==='mensual'?16:12,autoSkip:true}},
+          y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#64d8a0',font:{size:10},callback:v=>'S/'+v}}
         }
       }
     });
   }
 }
 
-function renderDashCharts(){
-  if(typeof Chart==='undefined') return;
-  renderChartLineal();
+// ── Factory genérica: filtro Semana/Mes/Año (igual al gráfico lineal) reutilizable ──
+function createPeriodFilter(opts){
+  const state={period:'semanal',anio:String(new Date().getFullYear()),mes:String(new Date().getMonth()),sem:null};
+  function paint(){
+    ['semanal','mensual','trimestral'].forEach(function(id){
+      const b=document.getElementById(opts.prefix+'-btn-'+id);
+      if(!b) return;
+      b.style.background=id===state.period?'#378ADD':'transparent';
+      b.style.color=id===state.period?'#fff':'#64d8a0';
+    });
+  }
+  function buildChips(){
+    const container=document.getElementById(opts.prefix+'-chips');
+    if(!container) return;
+    container.innerHTML='';
+    const now=new Date();
+    let items=[];
+    if(state.period==='trimestral'){
+      for(let y=2026;y<=now.getFullYear();y++) items.push({key:String(y),label:String(y)});
+      if(!items.length) items.push({key:String(now.getFullYear()),label:String(now.getFullYear())});
+      if(!items.find(i=>i.key===state.anio)) state.anio=String(now.getFullYear());
+      items.forEach(item=>{
+        const isActive=(state.anio===item.key);
+        const btn=document.createElement('button');
+        btn.textContent=item.label;
+        btn.style.cssText='padding:4px 10px;font-size:11px;font-weight:600;border:0.5px solid '+(isActive?'#378ADD':'rgba(255,255,255,0.12)')+';border-radius:20px;cursor:pointer;background:'+(isActive?'rgba(55,138,221,0.3)':'rgba(0,0,0,0.4)')+';color:'+(isActive?'#7ec8f7':'#64d8a0')+';transition:all .15s;white-space:nowrap';
+        btn.onclick=(e)=>{ e.stopPropagation(); state.anio=item.key; buildChips(); opts.onChange(); };
+        container.appendChild(btn);
+      });
+    } else if(state.period==='mensual'){
+      for(let m=0;m<12;m++) items.push({key:String(m),label:MESES_ES[m]});
+      items.forEach(item=>{
+        const isActive=(state.mes===item.key);
+        const btn=document.createElement('button');
+        btn.textContent=item.label;
+        btn.style.cssText='padding:4px 10px;font-size:11px;font-weight:600;border:0.5px solid '+(isActive?'#378ADD':'rgba(255,255,255,0.12)')+';border-radius:20px;cursor:pointer;background:'+(isActive?'rgba(55,138,221,0.3)':'rgba(0,0,0,0.4)')+';color:'+(isActive?'#7ec8f7':'#64d8a0')+';transition:all .15s;white-space:nowrap';
+        btn.onclick=(e)=>{ e.stopPropagation(); state.mes=item.key; state.sem=null; buildChips(); opts.onChange(); };
+        container.appendChild(btn);
+      });
+    } else {
+      const year=parseInt(state.anio), month=parseInt(state.mes);
+      let cursor=new Date(year,month,1);
+      const dow=cursor.getDay()===0?6:cursor.getDay()-1;
+      cursor.setDate(cursor.getDate()-dow);
+      let semN=1;
+      items.push({key:'todo',label:'Todo el mes'});
+      while(true){
+        const lunes=new Date(cursor);
+        const domingo=new Date(cursor); domingo.setDate(domingo.getDate()+6);
+        if(lunes.getFullYear()>year || (lunes.getFullYear()===year && lunes.getMonth()>month)) break;
+        if(lunes.getMonth()===month || domingo.getMonth()===month){
+          const key=lunes.toISOString().slice(0,10);
+          const label='Sem '+semN+' ('+lunes.toLocaleDateString('es-PE',{day:'2-digit',month:'numeric'})+'-'+domingo.toLocaleDateString('es-PE',{day:'2-digit',month:'numeric'})+')';
+          items.push({key,label});
+          semN++;
+        }
+        cursor.setDate(cursor.getDate()+7);
+      }
+      if(state.sem===null){
+        const lunesHoy=new Date(now);
+        const d=lunesHoy.getDay()===0?6:lunesHoy.getDay()-1;
+        lunesHoy.setDate(lunesHoy.getDate()-d); lunesHoy.setHours(0,0,0,0);
+        const keyHoy=lunesHoy.toISOString().slice(0,10);
+        state.sem=items.find(i=>i.key===keyHoy)?keyHoy:'todo';
+      }
+      items.forEach(item=>{
+        const isActive=(state.sem===item.key);
+        const btn=document.createElement('button');
+        btn.textContent=item.label;
+        btn.style.cssText='padding:4px 10px;font-size:11px;font-weight:600;border:0.5px solid '+(isActive?'#378ADD':'rgba(255,255,255,0.12)')+';border-radius:20px;cursor:pointer;background:'+(isActive?'rgba(55,138,221,0.3)':'rgba(0,0,0,0.4)')+';color:'+(isActive?'#7ec8f7':'#64d8a0')+';transition:all .15s;white-space:nowrap';
+        btn.onclick=(e)=>{ e.stopPropagation(); state.sem=item.key; buildChips(); opts.onChange(); };
+        container.appendChild(btn);
+      });
+    }
+  }
+  function getRange(){
+    const year=parseInt(state.anio), month=parseInt(state.mes);
+    let desde,hasta,label;
+    if(state.period==='trimestral'){
+      desde=new Date(year,0,1); hasta=new Date(year+1,0,1);
+      label=state.anio;
+    } else if(state.period==='mensual'){
+      desde=new Date(year,month,1); hasta=new Date(year,month+1,1);
+      label=MESES_ES[month]+' '+state.anio;
+    } else if(state.sem==='todo'||!state.sem){
+      desde=new Date(year,month,1); hasta=new Date(year,month+1,1);
+      label=MESES_ES[month]+' '+state.anio+' · Todo el mes';
+    } else {
+      desde=new Date(state.sem+'T00:00:00');
+      hasta=new Date(desde); hasta.setDate(hasta.getDate()+7);
+      label=MESES_ES[month]+' '+state.anio+' · Sem · '+state.sem.slice(5);
+    }
+    return {desde,hasta,label};
+  }
+  function initButtons(){
+    ['semanal','mensual','trimestral'].forEach(function(p){
+      const btn=document.getElementById(opts.prefix+'-btn-'+p);
+      if(!btn) return;
+      btn.addEventListener('click',function(e){
+        e.stopPropagation();
+        const wrap=document.getElementById(opts.prefix+'-chips-wrap');
+        state.period=p;
+        paint();
+        buildChips();
+        if(wrap) wrap.style.display='block';
+        opts.onChange();
+      });
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initButtons);
+  } else {
+    setTimeout(initButtons,0);
+  }
+  return {state,getRange};
+}
+let _prodFilter=null, _catFilter=null;
 
-  // ── Top productos (barras) ──
+function renderTopProductos(){
+  if(typeof Chart==='undefined') return;
+  const {desde,hasta,label}=_prodFilter.getRange();
+  const ventasF=state.ventas.filter(v=>{const fd=new Date(v.fecha);return fd>=desde&&fd<hasta;});
+  const subEl=document.getElementById('chart-barras-sub');
+  if(subEl) subEl.textContent='Unidades · '+label;
   const vpMap={};
-  state.ventas.forEach(v=>v.items.forEach(it=>{vpMap[it.nombre]=(vpMap[it.nombre]||0)+it.qty;}));
+  ventasF.forEach(v=>v.items.forEach(it=>{vpMap[it.nombre]=(vpMap[it.nombre]||0)+it.qty;}));
   const topProd=Object.entries(vpMap).sort((a,b)=>b[1]-a[1]).slice(0,8);
   const barLabels=topProd.map(x=>x[0]);
   const barData=topProd.map(x=>x[1]);
   const barColors=barData.map((v,i)=>i===0?'#378ADD':i<=2?'#185FA5':'#3a6291');
-  // ajustar alto del canvas según cantidad de productos
   const barWrap=document.getElementById('chart-barras-wrap');
   if(barWrap) barWrap.style.height=Math.max(160, barLabels.length*30+60)+'px';
 
@@ -926,17 +1087,24 @@ function renderDashCharts(){
     _chartBarras=new Chart(ctxB,{
       type:'bar',
       data:{labels:barLabels,datasets:[{label:'Unidades',data:barData,backgroundColor:barColors,borderRadius:4,borderSkipped:false}]},
-      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#2e2419',borderColor:'#5c4a38',borderWidth:0.5,titleColor:'#a7f3c8',bodyColor:'#fff',callbacks:{label:c=>' '+c.raw+' unidades'}}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#a7f3c8',font:{size:10}}},y:{grid:{display:false},ticks:{color:'#fff',font:{size:11}}}}}
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0d1117',borderColor:'rgba(255,255,255,0.1)',borderWidth:0.5,titleColor:'#64d8a0',bodyColor:'#fff',callbacks:{label:c=>' '+c.raw+' unidades'}}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#64d8a0',font:{size:10}}},y:{grid:{display:false},ticks:{color:'#fff',font:{size:11}}}}}
     });
   } else if(ctxB && !topProd.length){
     const ctx2=ctxB.getContext('2d');
-    ctx2.fillStyle='#a7f3c8';ctx2.font='13px sans-serif';ctx2.textAlign='center';
-    ctx2.fillText('Sin ventas registradas',ctxB.width/2,80);
+    ctx2.clearRect(0,0,ctxB.width,ctxB.height);
+    ctx2.fillStyle='#64d8a0';ctx2.font='13px sans-serif';ctx2.textAlign='center';
+    ctx2.fillText('Sin ventas en este período',ctxB.width/2,80);
   }
+}
 
-  // ── Donut categorías ──
+function renderDonutCategorias(){
+  if(typeof Chart==='undefined') return;
+  const {desde,hasta,label}=_catFilter.getRange();
+  const ventasF=state.ventas.filter(v=>{const fd=new Date(v.fecha);return fd>=desde&&fd<hasta;});
+  const subEl=document.getElementById('chart-donut-sub');
+  if(subEl) subEl.textContent='% del total · '+label;
   const catMap={};
-  state.ventas.forEach(v=>v.items.forEach(it=>{
+  ventasF.forEach(v=>v.items.forEach(it=>{
     const p=state.productos.find(x=>x.id===it.id);
     const cat=p?p.categoria:'Otros';
     catMap[cat]=(catMap[cat]||0)+it.precio*it.qty;
@@ -953,10 +1121,21 @@ function renderDashCharts(){
   if(ctxD && catEntries.length){
     _chartDonut=new Chart(ctxD,{
       type:'doughnut',
-      data:{labels:catEntries.map(x=>x[0]),datasets:[{data:catEntries.map(x=>parseFloat(x[1].toFixed(2))),backgroundColor:donutColors.slice(0,catEntries.length),borderColor:'#3a2e24',borderWidth:2,hoverOffset:6}]},
-      options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{backgroundColor:'#2e2419',borderColor:'#5c4a38',borderWidth:0.5,titleColor:'#a7f3c8',bodyColor:'#fff',callbacks:{label:c=>' S/ '+c.raw.toFixed(2)}}}}
+      data:{labels:catEntries.map(x=>x[0]),datasets:[{data:catEntries.map(x=>parseFloat(x[1].toFixed(2))),backgroundColor:donutColors.slice(0,catEntries.length),borderColor:'rgba(255,255,255,0.05)',borderWidth:2,hoverOffset:6}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false},tooltip:{backgroundColor:'#0d1117',borderColor:'rgba(255,255,255,0.1)',borderWidth:0.5,titleColor:'#64d8a0',bodyColor:'#fff',callbacks:{label:c=>' S/ '+c.raw.toFixed(2)}}}}
     });
+  } else if(ctxD && legendEl){
+    legendEl.innerHTML='<span style="color:#64d8a0">Sin ventas en este período</span>';
   }
+}
+
+function renderDashCharts(){
+  if(typeof Chart==='undefined') return;
+  renderChartLineal();
+  if(!_prodFilter) _prodFilter=createPeriodFilter({prefix:'prod',onChange:renderTopProductos});
+  if(!_catFilter) _catFilter=createPeriodFilter({prefix:'cat',onChange:renderDonutCategorias});
+  renderTopProductos();
+  renderDonutCategorias();
 
   // ── GAUGE META - estado (persistido en localStorage) ──
   if (typeof window._gaugePeriod === 'undefined') {
@@ -973,7 +1152,7 @@ function renderDashCharts(){
       const b = document.getElementById('gauge-btn-' + id);
       if (!b) return;
       b.style.background = id === p ? '#1D9E75' : 'transparent';
-      b.style.color = id === p ? '#fff' : '#a7f3c8';
+      b.style.color = id === p ? '#fff' : '#64d8a0';
     });
     // toggle panel: mismo botón cierra
     const panel = document.getElementById('gauge-input-panel');
@@ -1003,7 +1182,7 @@ function renderDashCharts(){
     const presets = maps[p] || [];
     el.innerHTML = presets.map(v => {
       const label = v >= 1000 ? (v/1000).toFixed(0)+'k' : v;
-      return `<button onclick="document.getElementById('gauge-meta-input').value=${v}" style="padding:3px 9px;font-size:11px;font-weight:600;border:0.5px solid #5c4a38;border-radius:20px;cursor:pointer;background:#3a2e24;color:#a7f3c8;transition:background .1s" onmouseover="this.style.background='#4a3828'" onmouseout="this.style.background='#3a2e24'">S/${label}</button>`;
+      return `<button onclick="document.getElementById('gauge-meta-input').value=${v}" style="padding:3px 9px;font-size:11px;font-weight:600;border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;cursor:pointer;background:rgba(255,255,255,0.05);color:#64d8a0;transition:background .1s" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">S/${label}</button>`;
     }).join('');
   }
 
@@ -1048,7 +1227,7 @@ function renderDashCharts(){
       const gc = gaugeEl.getContext('2d');
       const W=220,H=130,cx=110,cy=115,r=90;
       gc.clearRect(0,0,W,H);
-      gc.beginPath();gc.arc(cx,cy,r,Math.PI,2*Math.PI);gc.lineWidth=18;gc.strokeStyle='#2e2419';gc.lineCap='round';gc.stroke();
+      gc.beginPath();gc.arc(cx,cy,r,Math.PI,2*Math.PI);gc.lineWidth=18;gc.strokeStyle='rgba(255,255,255,0.06)';gc.lineCap='round';gc.stroke();
       // Power BI colors: red=bajo, yellow=mitad, green=llegando
       const col = pct >= 0.75 ? '#00C853' : pct >= 0.4 ? '#FFD600' : '#FF1744';
       const glowCol = pct >= 0.75 ? 'rgba(0,200,83,0.35)' : pct >= 0.4 ? 'rgba(255,214,0,0.35)' : 'rgba(255,23,68,0.35)';
@@ -1074,7 +1253,7 @@ function renderDashCharts(){
     const txtCol = pct >= 0.75 ? '#00C853' : pct >= 0.4 ? '#FFD600' : '#FF1744';
     const margen = totalPeriod > 0 ? (totalGanancia / totalPeriod * 100).toFixed(1) : '0.0';
     if(ga){ga.textContent=fmt(totalPeriod);ga.style.color=txtCol;}
-    if(gl){gl.textContent=(pct*100).toFixed(1)+'% '+subMap[window._gaugePeriod];gl.style.color='#a7f3c8';}
+    if(gl){gl.textContent=(pct*100).toFixed(1)+'% '+subMap[window._gaugePeriod];gl.style.color='#64d8a0';}
     if(gs){gs.textContent='Ganancia: '+fmt(totalGanancia)+' · Margen: '+margen+'%';gs.style.color='#4ade80';}
   }
 
@@ -1085,7 +1264,7 @@ function renderDashCharts(){
     const b = document.getElementById('gauge-btn-' + id);
     if (!b) return;
     b.style.background = id === window._gaugePeriod ? '#1D9E75' : 'transparent';
-    b.style.color = id === window._gaugePeriod ? '#fff' : '#a7f3c8';
+    b.style.color = id === window._gaugePeriod ? '#fff' : '#64d8a0';
   });
   renderGauge();
 
@@ -1161,10 +1340,10 @@ function renderTablaInteligente(){
     const rotLabel=rot>=3?'<span class="rot-badge rot-alta">Alta</span>':rot>=1?'<span class="rot-badge rot-media">Media</span>':'<span class="rot-badge rot-baja">Baja</span>';
     const estadoBadge=p.stock<=0?'<span class="badge badge-out">Agotado</span>':p.stock<=p.minstock?'<span class="badge badge-low">Bajo</span>':'<span class="badge badge-ok">OK</span>';
     return`<tr>
-      <td style="font-weight:500;color:#a7f3c8">${p.nombre}</td>
+      <td style="font-weight:500;color:#64d8a0">${p.nombre}</td>
       <td><span class="badge badge-info">${p.categoria}</span></td>
       <td style="color:#fff">${vm.qty} uds</td>
-      <td style="color:#4ade80">${fmt(vm.gan)}</td>
+      <td style="color:#00d68f">${fmt(vm.gan)}</td>
       <td style="color:${p.stock<=p.minstock?'#f87171':'#fff'};font-weight:500">${p.stock}</td>
       <td>${rotLabel}</td>
       <td>${estadoBadge}</td>
@@ -1219,15 +1398,15 @@ function renderCarrito(){
   document.getElementById('carrito-items').innerHTML=carrito.map((ci,i)=>{
     const diff=parseFloat((ci.precioReal-ci.precio).toFixed(2));
     const diffHtml=diff===0?''
-      :diff>0?`<span style="font-size:10px;color:#4ade80;font-weight:600">+${diff.toFixed(2)}</span>`
+      :diff>0?`<span style="font-size:10px;color:#00d68f;font-weight:600">+${diff.toFixed(2)}</span>`
               :`<span style="font-size:10px;color:#f87171;font-weight:600">${diff.toFixed(2)}</span>`;
     return`<div class="cart-item" style="flex-wrap:wrap;gap:4px">
       <span class="ci-name" style="flex:1;min-width:80px">${ci.nombre}</span>
       <div class="qty-ctrl"><button class="qty-btn" onclick="cambiarQty(${i},-1)" style="font-size:16px;line-height:1">−</button><span class="qty-num">${ci.qty}</span><button class="qty-btn" onclick="cambiarQty(${i},1)">+</button></div>
       <div style="display:flex;align-items:center;gap:4px">
-        <span style="font-size:10px;color:#a7f3c8">S/</span>
+        <span style="font-size:10px;color:#64d8a0">S/</span>
         <input type="number" step="0.10" min="0" value="${ci.precioReal.toFixed(2)}"
-          style="width:56px;background:#2e2419;border:0.5px solid ${diff!==0?'#4ade80':'#5c4a38'};border-radius:6px;color:#fff;font-size:13px;font-weight:600;padding:3px 5px;text-align:center"
+          style="width:56px;background:rgba(0,0,0,0.4);border:0.5px solid ${diff!==0?'#4ade80':'rgba(255,255,255,0.12)'};border-radius:6px;color:#fff;font-size:13px;font-weight:600;padding:3px 5px;text-align:center"
           oninput="cambiarPrecio(${i},this.value)"
           title="Precio base: ${fmt(ci.precio)}">
         ${diffHtml}
@@ -1393,6 +1572,10 @@ function renderInventario(){
       <td>${stockBadge(p)}</td>
       <td><div style="display:flex;gap:4px"><button class="btn btn-sm" onclick="editarProd(${p.id})">Editar</button><button class="btn btn-sm btn-danger" onclick="eliminarProd(${p.id})">Elim.</button></div></td>
     </tr>`;}).join(''):'<tr><td colspan="8" class="empty">Sin productos. Agrega tu primer producto arriba.</td></tr>';
+  // Actualizar contador total de productos
+  const totalProds = state.productos.length;
+  const el = document.getElementById('stock-counter-val');
+  if(el) el.textContent = totalProds;
 }
 window.renderInventario = renderInventario;
 
@@ -1487,7 +1670,7 @@ function renderSemanasDash(){
           <div style="height:40px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:4px">
             <div style="width:18px;background:linear-gradient(180deg,#2d9b5a,#1a6b3c);border-radius:3px 3px 0 0;height:${d.total>0?Math.max((d.total/maxTotal*100),8):2}%;min-height:${d.total>0?'4px':'2px'}"></div>
           </div>
-          <div style="font-size:10px;color:#4ade80;font-weight:500">${d.total>0?'S/'+d.total.toFixed(0):'-'}</div>
+          <div style="font-size:10px;color:#00d68f;font-weight:500">${d.total>0?'S/'+d.total.toFixed(0):'-'}</div>
           <div style="font-size:9px;color:var(--muted)">${d.count>0?d.count+'v':''}</div>
         </div>`;
   }).join('');
@@ -1526,7 +1709,7 @@ function verDetalleDia(i) {
           <div style="height:40px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:4px">
             <div style="width:18px;background:linear-gradient(180deg,#2d9b5a,#1a6b3c);border-radius:3px 3px 0 0;height:${d.total>0?Math.max((d.total/maxTotal*100),8):2}%;min-height:${d.total>0?'4px':'2px'}"></div>
           </div>
-          <div style="font-size:10px;color:#4ade80;font-weight:500">${d.total>0?'S/'+d.total.toFixed(0):'-'}</div>
+          <div style="font-size:10px;color:#00d68f;font-weight:500">${d.total>0?'S/'+d.total.toFixed(0):'-'}</div>
           <div style="font-size:9px;color:var(--muted)">${d.count>0?d.count+'v':''}</div>
         </div>`;
     }).join('');
@@ -1546,17 +1729,17 @@ function verDetalleDia(i) {
           <div style="height:40px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:4px">
             <div style="width:18px;background:linear-gradient(180deg,#2d9b5a,#1a6b3c);border-radius:3px 3px 0 0;height:${dx.total>0?Math.max((dx.total/mt*100),8):2}%;min-height:${dx.total>0?'4px':'2px'}"></div>
           </div>
-          <div style="font-size:10px;color:#4ade80;font-weight:500">${dx.total>0?'S/'+dx.total.toFixed(0):'-'}</div>
+          <div style="font-size:10px;color:#00d68f;font-weight:500">${dx.total>0?'S/'+dx.total.toFixed(0):'-'}</div>
           <div style="font-size:9px;color:var(--muted)">${dx.count>0?dx.count+'v':''}</div>
         </div>`).join('');
     }
   }
 
   if (!d.ventas.length) {
-    panel.innerHTML=`<div style="background:#2e2419;border-radius:10px;padding:12px 14px;border:0.5px solid #5c4a38;margin-top:4px">
+    panel.innerHTML=`<div style="background:rgba(0,0,0,0.4);border-radius:10px;padding:12px 14px;border:0.5px solid rgba(255,255,255,0.12);margin-top:4px">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <span style="font-size:13px;font-weight:600;color:#a7f3c8;text-transform:capitalize">${fechaStr}</span>
-        <button id="btn-close-dia" style="background:none;border:none;color:#a7f3c8;font-size:18px;cursor:pointer">×</button>
+        <span style="font-size:13px;font-weight:600;color:#64d8a0;text-transform:capitalize">${fechaStr}</span>
+        <button id="btn-close-dia" style="background:none;border:none;color:#64d8a0;font-size:18px;cursor:pointer">×</button>
       </div>
       <div style="text-align:center;padding:16px;color:var(--muted);font-size:13px">Sin ventas este día</div>
     </div>`;
@@ -1569,23 +1752,23 @@ function verDetalleDia(i) {
   const filas = ventasOrdenadas.map(v=>`
     <tr>
       <td style="font-size:11px;color:var(--muted)">${new Date(v.fecha).toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'})}</td>
-      <td style="font-size:12px;color:#a7f3c8">${v.items.map(it=>it.nombre+' ×'+it.qty).join(', ')}</td>
-      <td style="font-size:12px;font-weight:500;color:#4ade80;text-align:right">${fmt(v.total)}</td>
+      <td style="font-size:12px;color:#64d8a0">${v.items.map(it=>it.nombre+' ×'+it.qty).join(', ')}</td>
+      <td style="font-size:12px;font-weight:500;color:#00d68f;text-align:right">${fmt(v.total)}</td>
       <td style="font-size:12px;color:#fbbf24;text-align:right">${fmt(v.ganancia)}</td>
     </tr>`).join('');
 
   panel.innerHTML=`
-    <div style="background:#2e2419;border-radius:10px;padding:12px 14px;border:0.5px solid #5c4a38;margin-top:4px">
+    <div style="background:rgba(0,0,0,0.4);border-radius:10px;padding:12px 14px;border:0.5px solid rgba(255,255,255,0.12);margin-top:4px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <span style="font-size:13px;font-weight:600;color:#a7f3c8;text-transform:capitalize">${fechaStr}</span>
+        <span style="font-size:13px;font-weight:600;color:#64d8a0;text-transform:capitalize">${fechaStr}</span>
         <div style="display:flex;gap:6px;align-items:center">
           <button id="btn-toggle-ventas" style="background:#b45309;border:none;color:#fef3c7;font-size:11px;padding:3px 10px;border-radius:20px;cursor:pointer;font-weight:500">Ver ventas</button>
-          <button id="btn-close-dia" style="background:none;border:none;color:#a7f3c8;font-size:18px;cursor:pointer;line-height:1">×</button>
+          <button id="btn-close-dia" style="background:none;border:none;color:#64d8a0;font-size:18px;cursor:pointer;line-height:1">×</button>
         </div>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:10px">
-        <div style="flex:1;background:#1a6b3c;border-radius:8px;padding:8px 10px">
-          <div style="font-size:10px;color:#a7f3c8;margin-bottom:2px">Venta total</div>
+        <div style="flex:1;background:rgba(0,214,143,0.15);border-radius:8px;padding:8px 10px">
+          <div style="font-size:10px;color:#64d8a0;margin-bottom:2px">Venta total</div>
           <div style="font-size:16px;font-weight:600;color:#fff">${fmt(d.total)}</div>
         </div>
         <div style="flex:1;background:#b45309;border-radius:8px;padding:8px 10px">
@@ -1600,10 +1783,10 @@ function verDetalleDia(i) {
       <div id="ventas-tabla-wrap" style="overflow-x:auto;display:none">
         <table style="width:100%;border-collapse:collapse;font-size:12px">
           <thead><tr>
-            <th style="text-align:left;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid #5c4a38">Hora</th>
-            <th style="text-align:left;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid #5c4a38">Productos</th>
-            <th style="text-align:right;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid #5c4a38">Total</th>
-            <th style="text-align:right;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid #5c4a38">Ganancia</th>
+            <th style="text-align:left;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid rgba(255,255,255,0.12)">Hora</th>
+            <th style="text-align:left;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid rgba(255,255,255,0.12)">Productos</th>
+            <th style="text-align:right;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid rgba(255,255,255,0.12)">Total</th>
+            <th style="text-align:right;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid rgba(255,255,255,0.12)">Ganancia</th>
           </tr></thead>
           <tbody>${filas}</tbody>
         </table>
@@ -1619,7 +1802,7 @@ function verDetalleDia(i) {
     tablaWrap.style.display = visible ? 'block' : 'none';
     btnToggle.textContent = visible ? 'Ocultar ventas' : 'Ver ventas';
     btnToggle.style.background = visible ? '#1a6b3c' : '#b45309';
-    btnToggle.style.color = visible ? '#a7f3c8' : '#fef3c7';
+    btnToggle.style.color = visible ? '#64d8a0' : '#fef3c7';
   });
 
   document.getElementById('btn-close-dia').addEventListener('click', closeDia);
@@ -1970,8 +2153,8 @@ function abrirModalFecha(fid) {
   const fechaActual = new Date(v.fecha);
   // Mostrar info de la venta
   document.getElementById('modal-fecha-info').innerHTML =
-    `<b style="color:#a7f3c8">${v.items.map(it=>it.nombre+' ×'+it.qty).join(', ')}</b><br>
-     Total: <b style="color:#4ade80">${fmt(v.total)}</b> &nbsp;·&nbsp;
+    `<b style="color:#64d8a0">${v.items.map(it=>it.nombre+' ×'+it.qty).join(', ')}</b><br>
+     Total: <b style="color:#00d68f">${fmt(v.total)}</b> &nbsp;·&nbsp;
      Fecha actual: <b style="color:#fbbf24">${fechaActual.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'})}</b>`;
   // Pre-llenar con la fecha actual en formato YYYY-MM-DD
   const y = fechaActual.getFullYear();
