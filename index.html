@@ -384,6 +384,10 @@ select option:checked{background:#003d2b;color:#00d68f}
           <button class="dia-btn" id="dia-btn-4" onclick="selDia(this,-4)"></button>
           <button class="dia-btn" id="dia-btn-5" onclick="selDia(this,-5)"></button>
           <button class="dia-btn" id="dia-btn-6" onclick="selDia(this,-6)"></button>
+          <button class="dia-btn" id="dia-btn-custom" onclick="toggleFechaCustom(this)" style="border-color:rgba(245,158,11,0.4);color:#fbbf24">📅 Otra fecha</button>
+        </div>
+        <div id="dia-custom-wrap" style="display:none;margin-top:8px">
+          <input type="date" id="dia-custom-input" style="font-size:13px;padding:6px 10px;border:1px solid rgba(245,158,11,0.4);border-radius:10px;background:rgba(0,0,0,0.4);color:#fbbf24;width:100%" onchange="aplicarFechaCustom()">
         </div>
         <div id="dia-selected-label" style="font-size:11px;color:#00d68f;margin-top:6px;font-weight:500">✓ Registrando para hoy</div>
       </div>
@@ -523,6 +527,7 @@ let carrito = [];
 let editId = null;
 let ventaCatFiltro = '';
 let ventaFechaOffset = 0;
+let ventaFechaCustom = null; // Date object cuando se usa "Otra fecha"
 
 const _DIAS_ES = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 
@@ -534,6 +539,9 @@ function initDiaBtns(){
     const d=new Date(hoy);d.setDate(hoy.getDate()-i);
     btn.textContent=_DIAS_ES[d.getDay()]+' '+d.getDate();
   }
+  // Set max date for custom input to today
+  const inp = document.getElementById('dia-custom-input');
+  if(inp){ const h=new Date(); inp.max=h.toISOString().split('T')[0]; }
   _actualizarLabelDia();
 }
 
@@ -541,14 +549,66 @@ function selDia(btn,offset){
   document.querySelectorAll('.dia-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   ventaFechaOffset=offset;
+  ventaFechaCustom=null;
+  // Ocultar picker custom
+  const wrap=document.getElementById('dia-custom-wrap');
+  if(wrap) wrap.style.display='none';
   _actualizarLabelDia();
 }
 window.selDia=selDia;
 
-function _actualizarLabelDia(){
-  const d=new Date();d.setDate(d.getDate()+ventaFechaOffset);
+function toggleFechaCustom(btn){
+  const wrap=document.getElementById('dia-custom-wrap');
+  const inp=document.getElementById('dia-custom-input');
+  if(!wrap)return;
+  const visible = wrap.style.display!=='none';
+  if(visible){
+    // Cerrar sin aplicar, volver a Hoy
+    wrap.style.display='none';
+    ventaFechaCustom=null;
+    document.querySelectorAll('.dia-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.dia-btn').classList.add('active');
+    ventaFechaOffset=0;
+    _actualizarLabelDia();
+  } else {
+    wrap.style.display='block';
+    // Quitar active de otros botones, marcar este
+    document.querySelectorAll('.dia-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    if(inp && !inp.value){
+      const h=new Date(); inp.value=h.toISOString().split('T')[0];
+    }
+    if(inp && inp.value) aplicarFechaCustom();
+  }
+}
+window.toggleFechaCustom=toggleFechaCustom;
+
+function aplicarFechaCustom(){
+  const inp=document.getElementById('dia-custom-input');
+  if(!inp||!inp.value)return;
+  const [y,m,d]=inp.value.split('-').map(Number);
+  const fecha=new Date(y,m-1,d,12,0,0);
+  ventaFechaCustom=fecha;
+  ventaFechaOffset=0; // no se usa cuando hay custom
   const label=document.getElementById('dia-selected-label');
   if(!label)return;
+  const nombre=fecha.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  label.textContent='✓ Registrando para: '+nombre;
+  label.style.color='#fbbf24';
+}
+window.aplicarFechaCustom=aplicarFechaCustom;
+
+function _actualizarLabelDia(){
+  const label=document.getElementById('dia-selected-label');
+  if(!label)return;
+  label.style.color='#00d68f';
+  if(ventaFechaCustom){
+    const nombre=ventaFechaCustom.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    label.textContent='✓ Registrando para: '+nombre;
+    label.style.color='#fbbf24';
+    return;
+  }
+  const d=new Date();d.setDate(d.getDate()+ventaFechaOffset);
   if(ventaFechaOffset===0){label.textContent='✓ Registrando para hoy';return;}
   const nombre=d.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'});
   label.textContent='✓ Registrando para: '+nombre;
@@ -1473,12 +1533,17 @@ async function cobrar(){
   }
   // Guardar venta con la fecha seleccionada
   const _ahora=new Date();
-  const _fechaVenta=new Date();
-  _fechaVenta.setDate(_fechaVenta.getDate()+ventaFechaOffset);
+  let _fechaVenta;
+  if(ventaFechaCustom){
+    _fechaVenta=new Date(ventaFechaCustom);
+  } else {
+    _fechaVenta=new Date();
+    _fechaVenta.setDate(_fechaVenta.getDate()+ventaFechaOffset);
+  }
   // Siempre conservar la hora exacta actual (sea hoy o un día anterior)
   _fechaVenta.setHours(_ahora.getHours(),_ahora.getMinutes(),_ahora.getSeconds(),0);
   await saveVenta({fecha:_fechaVenta.toISOString(), items, total, ganancia});
-  const _diaLabel=ventaFechaOffset===0?'hoy':_fechaVenta.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long'});
+  const _diaLabel=(ventaFechaOffset===0&&!ventaFechaCustom)?'hoy':_fechaVenta.toLocaleDateString('es-PE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   carrito=[];renderCarrito();filtrarVenta();
   showMsg('venta-msg','✓ Venta registrada para '+_diaLabel+': '+fmt(total),'success');
 }
