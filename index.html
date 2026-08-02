@@ -471,6 +471,14 @@ select option:checked{background:#003d2b;color:#00d68f}
   <div class="two-col">
     <div class="card"><div class="card-title">Productos más vendidos</div><div id="rep-top"></div></div>
     <div class="card"><div class="card-title">Historial de ventas</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;align-items:center">
+        <select id="hist-orden" onchange="renderReportes()" style="width:auto;font-size:12px;padding:6px 8px">
+          <option value="desc">Más reciente primero</option>
+          <option value="asc">Más antiguo primero</option>
+        </select>
+        <input type="date" id="hist-fecha" onchange="renderReportes()" style="width:auto;font-size:12px;padding:6px 8px">
+        <button class="btn btn-sm" onclick="document.getElementById('hist-fecha').value='';renderReportes()" style="font-size:11px">✕ Limpiar fecha</button>
+      </div>
       <div style="max-height:300px;overflow-y:auto">
       <table><thead><tr><th>Fecha</th><th>Items</th><th>Total</th><th>Ganancia</th><th></th></tr></thead>
       <tbody id="rep-hist"></tbody></table></div>
@@ -1744,6 +1752,7 @@ function renderSemanasDash(){
       ${diasHtml}
     </div>
     <div id="detalle-dia-panel" style="margin-top:8px"></div>`;
+  if (selectedDiaIdx !== null) verDetalleDia(selectedDiaIdx);
 }
 
 function verDetalleDia(i) {
@@ -1820,6 +1829,7 @@ function verDetalleDia(i) {
       <td style="font-size:12px;color:#64d8a0">${v.items.map(it=>it.nombre+' ×'+it.qty).join(', ')}</td>
       <td style="font-size:12px;font-weight:500;color:#00d68f;text-align:right">${fmt(v.total)}</td>
       <td style="font-size:12px;color:#fbbf24;text-align:right">${fmt(v.ganancia)}</td>
+      <td style="text-align:center"><button onclick="anularVenta('${v._fid}')" title="Eliminar venta" style="background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.3);border-radius:6px;width:26px;height:26px;font-size:14px;cursor:pointer;line-height:1">🗑️</button></td>
     </tr>`).join('');
 
   panel.innerHTML=`
@@ -1852,6 +1862,7 @@ function verDetalleDia(i) {
             <th style="text-align:left;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid rgba(255,255,255,0.12)">Productos</th>
             <th style="text-align:right;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid rgba(255,255,255,0.12)">Total</th>
             <th style="text-align:right;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid rgba(255,255,255,0.12)">Ganancia</th>
+            <th style="text-align:center;padding:5px 6px;font-size:10px;color:var(--muted);border-bottom:0.5px solid rgba(255,255,255,0.12)"></th>
           </tr></thead>
           <tbody>${filas}</tbody>
         </table>
@@ -1921,7 +1932,22 @@ function renderReportes(){
       <div style="display:flex;justify-content:space-between;font-size:13px"><span style="font-weight:500">${n}</span><span>${q} uds</span></div>
       <div class="bar-wrap"><div class="bar-fill" style="width:${(q/mx*100).toFixed(0)}%"></div></div>
     </div>`).join(''):'<div class="empty">Sin datos de ventas</div>';
-  const hist=[...state.ventas].reverse().slice(0,25);
+  const ordenSel = document.getElementById('hist-orden');
+  const fechaSel = document.getElementById('hist-fecha');
+  const ordenVal = ordenSel ? ordenSel.value : 'desc';
+  const fechaVal = fechaSel ? fechaSel.value : '';
+
+  let hist = [...state.ventas];
+  if (fechaVal) {
+    hist = hist.filter(v => {
+      const f = new Date(v.fecha);
+      const y = f.getFullYear(), m = String(f.getMonth()+1).padStart(2,'0'), d = String(f.getDate()).padStart(2,'0');
+      return `${y}-${m}-${d}` === fechaVal;
+    });
+  }
+  hist.sort((a,b) => ordenVal === 'asc' ? new Date(a.fecha)-new Date(b.fecha) : new Date(b.fecha)-new Date(a.fecha));
+  if (!fechaVal) hist = hist.slice(0, 25);
+
   document.getElementById('rep-hist').innerHTML=hist.length?hist.map((v,ri)=>`<tr>
     <td>${new Date(v.fecha).toLocaleDateString('es-PE',{day:'numeric',month:'short'})}</td>
     <td>${v.items.reduce((a,i)=>a+i.qty,0)}</td>
@@ -1931,7 +1957,7 @@ function renderReportes(){
       <button class="btn btn-sm" style="background:#1d4ed8;color:#fff;border-color:#3b82f6;font-size:10px;padding:4px 8px" onclick="abrirModalFecha('${v._fid}')">📅 Fecha</button>
       <button class="btn btn-sm btn-danger" onclick="anularVenta('${v._fid}',${ri})">Anular</button>
     </td>
-  </tr>`).join(''):'<tr><td colspan="5" class="empty">Sin ventas</td></tr>';
+  </tr>`).join(''):'<tr><td colspan="5" class="empty">Sin ventas para este filtro</td></tr>';
   const ic=state.productos.reduce((a,p)=>a+p.costo*p.stock,0);
   const ip=state.productos.reduce((a,p)=>a+p.precio*p.stock,0);
   const pot=ip-ic;
@@ -1941,6 +1967,7 @@ function renderReportes(){
     <div class="stat stat-2"><div class="stat-label">Ganancia potencial</div><div class="stat-value">${fmt(pot)}</div></div>
   `;
 }
+window.renderReportes = renderReportes;
 
 async function anularVenta(fid, ri){
   const v=state.ventas.find(x=>x._fid===fid);
