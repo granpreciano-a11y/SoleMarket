@@ -1792,10 +1792,13 @@ function renderGastos(){
   const ventasMes=(state.ventas||[]).filter(v=>{const d=new Date(v.fecha);return d.getMonth()===ahora.getMonth()&&d.getFullYear()===ahora.getFullYear();});
   const gananciaMes=ventasMes.reduce((a,v)=>a+v.ganancia,0);
   const gananciaNeta=gananciaMes-totalMes;
+  const fInicioMes=new Date(ahora.getFullYear(),ahora.getMonth(),1);
+  const mesAbrev=ahora.toLocaleDateString('es-PE',{month:'short'}).replace('.','');
+  const rangoMesTxt=`${fInicioMes.getDate()} – ${ahora.getDate()} ${mesAbrev}.`;
   document.getElementById('gastos-kpi-grid').innerHTML=`
-    <div class="stat stat-1"><div class="stat-label">Gasto del mes</div><div class="stat-value">${fmt(totalMes)}</div><div class="stat-sub">${gastosMes.length} gastos</div></div>
+    <div class="stat stat-1"><div class="stat-label">Gasto del mes</div><div class="stat-value">${fmt(totalMes)}</div><div class="stat-sub">${gastosMes.length} gastos · ${rangoMesTxt}</div></div>
     <div class="stat stat-3"><div class="stat-label">Total (filtro actual)</div><div class="stat-value">${fmt(totalFiltrado)}</div><div class="stat-sub">${gastos.length} gastos</div></div>
-    <div class="stat stat-2"><div class="stat-label">Ganancia neta del mes</div><div class="stat-value" style="color:${gananciaNeta>=0?'#4ade80':'#f87171'}">${fmt(gananciaNeta)}</div><div class="stat-sub">ganancia ${fmt(gananciaMes)} − gastos ${fmt(totalMes)}</div></div>
+    <div class="stat stat-2"><div class="stat-label">Ganancia neta del mes</div><div class="stat-value" style="color:${gananciaNeta>=0?'#4ade80':'#f87171'}">${fmt(gananciaNeta)}</div><div class="stat-sub">ganancia ${fmt(gananciaMes)} − gastos ${fmt(totalMes)}<br>${rangoMesTxt}</div></div>
   `;
 
   document.getElementById('gastos-tbody').innerHTML=gastos.length?gastos.map(g=>{
